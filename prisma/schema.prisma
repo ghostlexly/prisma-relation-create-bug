@@ -1,0 +1,26 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-arm64-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_CONNECTION_URL")
+}
+
+model HousekeeperInformation {
+  id String @id @default(uuid())
+
+  companyAddress   HousekeeperCompanyAddress? @relation(fields: [companyAddressId], references: [id])
+  companyAddressId String?                    @unique
+}
+
+model HousekeeperCompanyAddress {
+  id            String                  @id @default(uuid())
+  street        String
+  streetDetails String?
+  city          String
+  postalCode    String
+  countryCode   String
+  informations  HousekeeperInformation?
+}
